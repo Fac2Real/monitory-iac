@@ -1,3 +1,6 @@
+.csv
+.terraform.lock.hcl
+
 # Created by https://www.toptal.com/developers/gitignore/api/terraform,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=terraform,macos,windows
 
