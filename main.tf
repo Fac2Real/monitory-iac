@@ -34,3 +34,15 @@ module "private_link" {
 
   depends_on = [module.endpoint_sg]
 }
+
+module "jenkins" {
+  source = "./modules/jenkins"
+  count  = length(data.aws_instances.jenkins_controller_exist.ids) > 0 ? 0 : 1
+
+  vpc_id              = local.vpc_id
+  public_subnet_id    = local.public_subnet_id
+  key_name            = "monitory-jenkins"
+  controller_ami_name = "jenkins-controller-ami-*"
+
+  depends_on = [module.vpc]
+}
