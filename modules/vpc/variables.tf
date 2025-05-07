@@ -1,3 +1,5 @@
+// modules/vpc/variables.tf
+
 variable "aws_region" {
   description = "AWS 리전을 선택합니다."
   type        = string
