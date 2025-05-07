@@ -14,5 +14,9 @@ variable "security_group_ids" {
 variable "region" {
   description = "AWS region for service endpoints"
   type        = string
-  default     = "ap-northeast-2"
+}
+
+variable "privatelink_name" {
+  description = "Logical name for the PrivateLink endpoint (used as the Name tag)"
+  type        = string
 }

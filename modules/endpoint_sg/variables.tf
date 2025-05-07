@@ -11,5 +11,4 @@ variable "vpc_cidr_block" {
 variable "endpoint_sg_name" {
   description = "Name for the PrivateLink endpoint SG"
   type        = string
-  default     = "pl-endpoint-sg"
 }

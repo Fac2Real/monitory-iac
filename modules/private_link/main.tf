@@ -7,4 +7,8 @@ resource "aws_vpc_endpoint" "iot_data" {
   subnet_ids          = var.subnet_ids
   security_group_ids  = var.security_group_ids
   private_dns_enabled = false
+
+  tags = {
+    Name = var.privatelink_name
+  }
 }
