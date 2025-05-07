@@ -14,6 +14,15 @@ resource "aws_security_group" "pl_endpoint" {
     ipv6_cidr_blocks = []
   }
 
+  ingress {
+    description      = "Allow MQTT over TLS(8883) from within VPC"
+    from_port        = 8883
+    to_port          = 8883
+    protocol         = "tcp"
+    cidr_blocks      = [var.vpc_cidr_block]
+    ipv6_cidr_blocks = []
+  }
+
   egress {
     description      = "Allow all outbound"
     from_port        = 0
