@@ -17,10 +17,10 @@ variable "public_subnet_cidrs" {
 
 variable "private_subnet_cidrs" {
   description = "Private 서브넷에 사용할 CIDR 블록 목록입니다. (가용 영역 수만큼 필요)"
-  type        = string
+  type        = list(string)
 }
 
 variable "availability_zones" {
-  description = "사용할 가용 영역(AZ) 목록입니다."
-  type        = string
+  description = "사용할 가용 영역(AZ) 목록(2개 이상)"
+  type        = list(string)
 }

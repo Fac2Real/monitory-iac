@@ -1,5 +1,6 @@
 // modules/vpc/main.tf
 
+// VPC
 resource "aws_vpc" "this" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -10,6 +11,7 @@ resource "aws_vpc" "this" {
   }
 }
 
+// IGW
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
@@ -21,7 +23,7 @@ resource "aws_internet_gateway" "this" {
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.this.id
   cidr_block              = var.public_subnet_cidrs
-  availability_zone       = var.availability_zones
+  availability_zone       = var.availability_zones[0]
   map_public_ip_on_launch = true
 
   tags = {
@@ -31,11 +33,21 @@ resource "aws_subnet" "public" {
 
 resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.this.id
-  cidr_block        = var.private_subnet_cidrs
-  availability_zone = var.availability_zones
+  cidr_block        = var.private_subnet_cidrs[0]
+  availability_zone = var.availability_zones[0]
 
   tags = {
     Name = "private-subnet"
+  }
+}
+
+resource "aws_subnet" "unused" {
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_subnet_cidrs[1]
+  availability_zone = var.availability_zones[1]
+
+  tags = {
+    Name = "unused-subnet"
   }
 }
 
@@ -69,3 +81,9 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_vpc.this.default_route_table_id
 }
+
+resource "aws_route_table_association" "unused" {
+  subnet_id      = aws_subnet.unused.id
+  route_table_id = aws_vpc.this.default_route_table_id
+}
+
