@@ -15,6 +15,11 @@ output "private_subnet_id" {
   value       = aws_subnet.private.id
 }
 
+output "unused_subnet_id" {
+  description = "미사용 서브넷 ID"
+  value       = aws_subnet.unused.id
+}
+
 output "vpc_cidr_block" {
   description = "VPC CIDR 블록"
   value       = aws_vpc.this.cidr_block
