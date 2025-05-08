@@ -53,3 +53,9 @@ module "s3" {
   versioning  = false
   tags        = {}
 }
+
+module "ecr" {
+  source     = "./modules/ecr"
+  repo_names = ["flink", "springboot", "kafka", "kafka-connet"]
+  tags       = {}
+}
