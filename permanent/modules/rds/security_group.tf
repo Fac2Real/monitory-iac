@@ -2,7 +2,7 @@
 
 # 1) Security Group for RDS: allow 3306 from allowed SGs (e.g., Jenkins)
 resource "aws_security_group" "rds" {
-  name        = "monitory-sg-rdb"
+  name        = var.rds_sg_name
   description = "RDS MySQL access"
   vpc_id      = var.vpc_id
 
@@ -22,6 +22,6 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "monitory-sg-rdb"
+    Name = var.rds_sg_name
   }
 }

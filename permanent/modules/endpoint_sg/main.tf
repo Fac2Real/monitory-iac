@@ -31,4 +31,8 @@ resource "aws_security_group" "pl_endpoint" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+
+  tags = {
+    Name = var.endpoint_sg_name
+  }
 }

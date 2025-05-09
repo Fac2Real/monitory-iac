@@ -19,3 +19,13 @@ variable "controller_ami_name" {
   description = "AMI name for Jenkins controller"
   type        = string
 }
+
+variable "jenkins_controller_sg_name" {
+  description = "Security group name for Jenkins controller"
+  type        = string
+}
+
+variable "jenkins_agent_sg_name" {
+  description = "Security group name for Jenkins agent"
+  type        = string
+}

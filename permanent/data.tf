@@ -45,14 +45,6 @@ data "aws_security_groups" "endpoint_exist" {
   }
 }
 
-data "aws_vpc_endpoint" "existing" {
-  count = length(data.aws_vpcs.monitory.ids) > 0 ? 1 : 0
-  filter {
-    name   = "tag:Name"
-    values = ["monitory-privatelink"]
-  }
-}
-
 # Check for existing Jenkins controller instances
 data "aws_instances" "jenkins_controller" {
   filter {

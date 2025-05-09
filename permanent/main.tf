@@ -22,27 +22,16 @@ module "endpoint_sg" {
   depends_on = [module.vpc]
 }
 
-module "private_link" {
-  source = "./modules/private_link"
-  count  = length(data.aws_security_groups.endpoint_exist.ids) > 0 ? 0 : 1
-
-  vpc_id             = local.vpc_id
-  subnet_ids         = [local.private_subnet_id]
-  security_group_ids = [local.endpoint_sg_id]
-  region             = "ap-northeast-2"
-  privatelink_name   = "monitory-privatelink"
-
-  depends_on = [module.endpoint_sg]
-}
-
 module "jenkins" {
   source = "./modules/jenkins"
   count  = length(data.aws_instances.jenkins_controller.ids) > 0 ? 0 : 1
 
-  vpc_id              = local.vpc_id
-  public_subnet_id    = local.public_subnet_id
-  key_name            = "monitory-jenkins"
-  controller_ami_name = "jenkins-controller-ami-*"
+  vpc_id                     = local.vpc_id
+  public_subnet_id           = local.public_subnet_id
+  key_name                   = "monitory-jenkins"
+  controller_ami_name        = "jenkins-controller-ami-*"
+  jenkins_controller_sg_name = "monitory-jenkins-controller-sg"
+  jenkins_agent_sg_name      = "monitory-jenkins-agent-sg"
 
   depends_on = [module.vpc]
 }
@@ -64,6 +53,7 @@ module "rds" {
   source             = "./modules/rds"
   vpc_id             = local.vpc_id
   private_subnet_ids = [local.private_subnet_id, local.unused_subnet_id]
+  rds_sg_name        = "monitory-rdb-sg"
   allowed_sg_ids     = [local.jenkins_controller_sg_id]
   db_identifier      = "monitory-rdb"
   db_name            = "my_database"

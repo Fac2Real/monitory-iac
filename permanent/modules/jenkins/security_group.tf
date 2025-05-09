@@ -1,7 +1,7 @@
 // modules/jenkins/security_group.tf
 
 resource "aws_security_group" "jenkins_sg" {
-  name   = "jenkins-sg-controller"
+  name   = var.jenkins_controller_sg_name
   vpc_id = var.vpc_id
 
   ingress {
@@ -26,11 +26,11 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "jenkins-sg-controller" }
+  tags = { Name = var.jenkins_controller_sg_name }
 }
 
 resource "aws_security_group" "jenkins_agent_sg" {
-  name   = "jenkins-sg-agent"
+  name   = var.jenkins_agent_sg_name
   vpc_id = var.vpc_id
 
   ingress {
@@ -47,5 +47,5 @@ resource "aws_security_group" "jenkins_agent_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "jenkins-sg-agent" }
+  tags = { Name = var.jenkins_agent_sg_name }
 }

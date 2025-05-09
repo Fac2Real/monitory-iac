@@ -8,6 +8,11 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "rds_sg_name" {
+  description = "Name of the security group for the RDS instance"
+  type        = string
+}
+
 variable "allowed_sg_ids" {
   description = "List of security group IDs to allow access to the RDS instance"
   type        = list(string)
