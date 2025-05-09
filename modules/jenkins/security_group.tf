@@ -1,4 +1,4 @@
-// 
+// modules/jenkins/security_group.tf
 
 resource "aws_security_group" "jenkins_sg" {
   name   = "jenkins-sg-controller"
@@ -9,6 +9,14 @@ resource "aws_security_group" "jenkins_sg" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # 2) JNLP 50000 from Agent SG
+  ingress {
+    from_port       = 50000
+    to_port         = 50000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.jenkins_agent_sg.id]
   }
 
   egress {
@@ -26,16 +34,10 @@ resource "aws_security_group" "jenkins_agent_sg" {
   vpc_id = var.vpc_id
 
   ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    security_groups = [aws_security_group.jenkins_sg.id]
-  }
-  ingress {
-    from_port       = 50000
-    to_port         = 50000
-    protocol        = "tcp"
-    security_groups = [aws_security_group.jenkins_sg.id]
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
