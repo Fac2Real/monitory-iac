@@ -37,7 +37,7 @@ module "private_link" {
 
 module "jenkins" {
   source = "./modules/jenkins"
-  count  = length(data.aws_instances.jenkins_controller_exist.ids) > 0 ? 0 : 1
+  count  = length(data.aws_instances.jenkins_controller.ids) > 0 ? 0 : 1
 
   vpc_id              = local.vpc_id
   public_subnet_id    = local.public_subnet_id
@@ -58,4 +58,17 @@ module "ecr" {
   source     = "./modules/ecr"
   repo_names = ["flink", "springboot", "kafka", "kafka-connet"]
   tags       = {}
+}
+
+module "rds" {
+  source             = "./modules/rds"
+  vpc_id             = local.vpc_id
+  private_subnet_ids = [local.private_subnet_id, local.unused_subnet_id]
+  allowed_sg_ids     = [local.jenkins_controller_sg_id]
+  db_identifier      = "monitory-rdb"
+  db_name            = "my_database"
+  db_username        = var.db_username
+  db_password        = var.db_password
+
+  depends_on = [module.vpc]
 }
