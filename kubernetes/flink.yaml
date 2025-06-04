@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+  template:
+    metadata:
+      labels:
+        app: flink
+    spec:
+      containers:
+        - name: flink
+          image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/flink:flink-latest
+          ports:
+            - containerPort: 8081
+            - containerPort: 6123
+          envFrom:
+            - configMapRef:
+                name: backend-config
+            - secretRef:
+                name: backend-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink
+spec:
+  type: ClusterIP
+  ports:
+    - name: ui
+      port: 8081
+      targetPort: 8081
+    - name: rpc
+      port: 6123
+      targetPort: 6123
+  selector:
+    app: flink

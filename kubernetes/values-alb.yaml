@@ -1,0 +1,8 @@
+clusterName: monitory-eks-cluster
+region: ap-northeast-2
+vpcId: vpc-0a30db526138c3313
+serviceAccount:
+  create: true
+  name: aws-load-balancer-controller
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::853660505909:role/AWSLoadBalancerControllerRole
