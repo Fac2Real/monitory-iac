@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/springboot:backend-latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: spring.datasource.url
+            - name: KAFKA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: kafka.host
+            - name: KAFKA_CONSUMER_GROUP_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: kafka.consumer.group.id
+            - name: GRAFANA_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: grafana.url
+            - name: GRAFANA_DATASOURCE_UID
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: grafana.datasource.uid
+            - name: AWS_IAM_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: aws-access-key
+            - name: AWS_IAM_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: aws-secret-key
+            - name: GRAFANA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: grafana-api-key
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: slack-webhook-url
+            - name: FIREBASE_JSON_BASE64
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: firebase-json-base64
+            - name: SLACK_WEBHOOK_EQUIP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: slack-webhook-equip-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /api/zones
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  type: NodePort
