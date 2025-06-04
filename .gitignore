@@ -102,3 +102,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform,macos,windows
+
+# configmap and secret contents from envfile(used in backend)
+configmap.yaml
+secret.yaml
