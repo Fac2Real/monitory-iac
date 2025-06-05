@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: www.monitory.space
+    - host: api.monitory.space
       http:
         paths:
           - path: /

@@ -15,6 +15,7 @@ spec:
       containers:
         - name: chronograf
           image: chronograf:1.9
+          imagePullPolicy: Always
           ports:
           - containerPort: 8888
           env:

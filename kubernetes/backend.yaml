@@ -15,14 +15,10 @@ spec:
       containers:
         - name: backend
           image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/springboot:backend-latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
-            - name: SPRING_DATASOURCE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: backend-config
-                  key: spring.datasource.url
             - name: KAFKA_HOST
               valueFrom:
                 configMapKeyRef:
@@ -33,11 +29,16 @@ spec:
                 configMapKeyRef:
                   name: backend-config
                   key: kafka.consumer.group.id
-            - name: GRAFANA_URL
+            - name: GRAFANA_URL_OUTER
               valueFrom:
                 configMapKeyRef:
                   name: backend-config
-                  key: grafana.url
+                  key: grafana.url.outer
+            - name: GRAFANA_URL_INTER
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: grafana.url.inter
             - name: GRAFANA_DATASOURCE_UID
               valueFrom:
                 configMapKeyRef:
@@ -73,6 +74,36 @@ spec:
                 secretKeyRef:
                   name: backend-secret
                   key: slack-webhook-equip-url
+            - name: MAIL_SERVER_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: mail_server_username
+            - name: MAIL_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mail_server_password
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: db_name
+            - name: RDS_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: rds_username
+            - name: RDS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: rds_host
+            - name: RDS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: rds_password
 ---
 apiVersion: v1
 kind: Service

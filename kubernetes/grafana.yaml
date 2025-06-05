@@ -15,6 +15,7 @@ spec:
       containers:
         - name: grafana
           image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/zone-grafana
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           envFrom:
