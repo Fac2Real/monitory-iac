@@ -28,6 +28,7 @@ spec:
       containers:
       - name: kafka-connect
         image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/eks-test:custom-kafka-connect
+        imagePullPolicy: Always
         ports:
           - containerPort: 8083
         env:

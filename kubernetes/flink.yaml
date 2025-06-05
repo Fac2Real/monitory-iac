@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: flink
-          image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/flink:flink-latest
+          image: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/flink:flink-prod-latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8081
             - containerPort: 6123
