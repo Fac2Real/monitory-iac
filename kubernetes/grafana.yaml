@@ -25,9 +25,15 @@ spec:
                 name: backend-secret
           env:
             - name: GF_SECURITY_ADMIN_USER
-              value: "admin"
+              valueFrom:
+                configMapKeyRef:
+                  name: grafana-config
+                  key: GF_SECURITY_ADMIN_USER
             - name: GF_SECURITY_ADMIN_PASSWORD
-              value: "NewSecureP@ss"
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secret
+                  key: GF_SECURITY_ADMIN_PASSWORD
             - name: GF_AUTH_ANONYMOUS_ENABLED
               value: "true"
             - name: GF_AUTH_ANONYMOUS_ORG_ROLE
