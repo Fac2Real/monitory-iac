@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: confluentinc/cp-zookeeper
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  name: zookeeper-headless
+  port: 2181
+
+containerPort: 2181
+
+env:
+  clientPort: "2181"
+  tickTime: "2000"

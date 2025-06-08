@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/flink
+  tag: flink-prod-latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+
+containerPortUI: 8081
+containerPortRPC: 6123
+
+awsRegion: ap-northeast-2
+secretName: flink-secret

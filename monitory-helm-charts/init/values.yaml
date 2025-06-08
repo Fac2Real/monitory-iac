@@ -1,0 +1,12 @@
+influxdbInitJob:
+  enabled: true
+  image: influxdb:1.11
+  name: influxdb-init
+  secretName: influxdb-secret
+  configMapName: influxdb-config
+
+influxdbSinkJob:
+  enabled: true
+  image: curlimages/curl:7.85.0
+  name: influxdb-sink
+  configMapName: influxdb-sink-config

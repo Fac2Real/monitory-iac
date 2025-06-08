@@ -1,0 +1,5 @@
+apiVersion: v2
+name: zookeeper
+description: Zookeeper Helm chart
+version: 0.1.0
+appVersion: "3.7.0"

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: ui
+      port: {{ .Values.containerPortUI }}
+      targetPort: {{ .Values.containerPortUI }}
+    - name: rpc
+      port: {{ .Values.containerPortRPC }}
+      targetPort: {{ .Values.containerPortRPC }}
+  selector:
+    app: flink

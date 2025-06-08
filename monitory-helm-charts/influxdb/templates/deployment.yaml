@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: fix-permissions
+          image: busybox:1.35.0
+          command: ["sh", "-c", "chown -R 1000:1000 /var/lib/influxdb"]
+          volumeMounts:
+            - name: influxdb-data
+              mountPath: /var/lib/influxdb
+      containers:
+        - name: influxdb
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          volumeMounts:
+            - name: influxdb-data
+              mountPath: /var/lib/influxdb
+      volumes:
+        - name: influxdb-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}

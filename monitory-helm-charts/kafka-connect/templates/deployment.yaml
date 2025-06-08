@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connect
+  labels:
+    app: kafka-connect
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: kafka-connect
+  template:
+    metadata:
+      labels:
+        app: kafka-connect
+    spec:
+      initContainers:
+        - name: wait-for-kafka
+          image: busybox:1.35.0
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z {{ .Values.kafkaBootstrapServers | splitList ":" | first }} {{ .Values.kafkaBootstrapServers | splitList ":" | last }}; do
+                echo "[init] waiting for Kafka"; sleep 2;
+              done
+      containers:
+        - name: kafka-connect
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: {{ .Values.kafkaBootstrapServers | quote }}
+            - name: CONNECT_REST_PORT
+              value: "8083"
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              value: "kafka-connect"
+            - name: CONNECT_REST_REQUEST_TIMEOUT_MS
+              value: "120000"
+            - name: CONNECT_GROUP_ID
+              value: "kafka-connect-group"
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: "connect-configs"
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: "connect-offsets"
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: "connect-statuses"
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_KEY_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_INTERNAL_KEY_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_INTERNAL_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_LOG4J_LOGGERS
+              value: "org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR"
+            - name: CONNECT_PLUGIN_PATH
+              value: "/usr/share/java,/usr/share/confluent-hub-components"

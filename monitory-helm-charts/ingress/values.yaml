@@ -1,0 +1,23 @@
+name: monitory-ingress
+
+annotations:
+  kubernetes.io/ingress.class: alb
+  alb.ingress.kubernetes.io/scheme: internet-facing
+  alb.ingress.kubernetes.io/target-type: ip
+  alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+
+ingressClassName: alb
+
+rules:
+  - host: api.monitory.space
+    paths:
+      - path: /
+        pathType: Prefix
+        serviceName: backend
+        servicePort: 8080
+  - host: grafana.monitory.space
+    paths:
+      - path: /
+        pathType: Prefix
+        serviceName: grafana
+        servicePort: 3000

@@ -1,0 +1,43 @@
+{{- if .Values.influxdbSinkJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.influxdbSinkJob.name }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: influxdb-sink-connector
+          image: {{ .Values.influxdbSinkJob.image }}
+          command:
+            - sh
+            - -c
+            - |
+              until curl -sf http://influxdb:8086/ping; do
+                echo "[wait] InfluxDB not ready"; sleep 3;
+              done
+              until curl -sf http://kafka-connect:8083/; do
+                echo "[wait] Kafka Connect not ready"; sleep 3;
+              done
+              response=$(curl -s -w "%{http_code}" -o /tmp/response.json \
+                -X POST -H "Content-Type: application/json" \
+                --data @/config/influxdb-sink-config.json \
+                http://kafka-connect:8083/connectors)
+              http_code=$response
+              echo "==== Kafka Connect Response ===="
+              cat /tmp/response.json
+              echo "==== HTTP Status Code: $http_code ===="
+              if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+                echo "Connector registered successfully."
+              else
+                echo "Error registering connector, HTTP status: $http_code"
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Values.influxdbSinkJob.configMapName }}
+{{- end }}

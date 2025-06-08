@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/eks-test
+  tag: custom-kafka-connect
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8083
+  targetPort: 8083
+  name: rest
+
+containerPort: 8083
+
+kafkaBootstrapServers: "kafka-headless.default.svc.cluster.local:9092"

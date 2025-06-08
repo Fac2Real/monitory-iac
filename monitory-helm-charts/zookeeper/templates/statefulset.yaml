@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  serviceName: {{ .Values.service.name }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: {{ .Values.env.clientPort | quote }}
+            - name: ZOOKEEPER_TICK_TIME
+              value: {{ .Values.env.tickTime | quote }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/zookeeper/data
+      volumes:
+        - name: data
+          emptyDir: {}

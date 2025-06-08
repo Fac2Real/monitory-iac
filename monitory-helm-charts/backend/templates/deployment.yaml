@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            - name: KAFKA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: kafka.host
+            - name: KAFKA_CONSUMER_GROUP_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: kafka.consumer.group.id
+            - name: GRAFANA_URL_OUTER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: grafana.url.outer
+            - name: GRAFANA_URL_INTER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: grafana.url.inter
+            - name: GRAFANA_DATASOURCE_UID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: grafana.datasource.uid
+            - name: AWS_IAM_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: aws-access-key
+            - name: AWS_IAM_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: aws-secret-key
+            - name: GRAFANA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: grafana-api-key
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: slack-webhook-url
+            - name: FIREBASE_JSON_BASE64
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: firebase-json-base64
+            - name: SLACK_WEBHOOK_EQUIP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: slack-webhook-equip-url
+            - name: MAIL_SERVER_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: mail_server_username
+            - name: MAIL_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: mail_server_password
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: db_name
+            - name: RDS_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: rds_username
+            - name: RDS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: rds_host
+            - name: RDS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: rds_password

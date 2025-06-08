@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  repository: influxdb
+  tag: "1.11"
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8086
+  targetPort: 8086
+  protocol: TCP
+  name: http
+
+containerPort: 8086
+
+pvc:
+  create: false
+  name: influxdb-pvc
+  storageClassName: gp3
+  accessModes:
+    - ReadWriteOnce
+  storage: 30Gi
+
+storageClass:
+  create: false
+  name: ebs-retain
+  provisioner: ebs.csi.aws.com
+  reclaimPolicy: Retain
+  volumeBindingMode: WaitForFirstConsumer
+  allowVolumeExpansion: true

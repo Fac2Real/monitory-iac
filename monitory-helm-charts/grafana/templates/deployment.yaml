@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: backend-config
+            - secretRef:
+                name: backend-secret
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: GF_SECURITY_ADMIN_USER
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: GF_SECURITY_ADMIN_PASSWORD
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: {{ .Values.authAnonymousEnabled | quote }}
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: {{ .Values.authAnonymousOrgRole | quote }}
+            - name: GF_SECURITY_ALLOW_EMBEDDING
+              value: {{ .Values.allowEmbedding | quote }}
+            - name: GF_SECURITY_COOKIE_SECURE
+              value: {{ .Values.cookieSecure | quote }}
+            - name: GF_SECURITY_COOKIE_SAMESITE
+              value: {{ .Values.cookieSameSite | quote }}
+            - name: GF_SERVER_ROOT_URL
+              value: {{ .Values.rootUrl | quote }}
+          volumeMounts:
+            - name: grafana-data
+              mountPath: /var/lib/grafana
+      volumes:
+        - name: grafana-data
+          emptyDir: {}

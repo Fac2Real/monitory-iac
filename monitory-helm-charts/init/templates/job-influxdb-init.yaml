@@ -1,0 +1,44 @@
+{{- if .Values.influxdbInitJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.influxdbInitJob.name }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: influxdb-init
+          image: {{ .Values.influxdbInitJob.image }}
+          env:
+            - name: INFLUXDB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.influxdbInitJob.secretName }}
+                  key: INFLUXDB_USERNAME
+            - name: INFLUXDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.influxdbInitJob.secretName }}
+                  key: INFLUXDB_PASSWORD
+            - name: INFLUXDB_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.influxdbInitJob.configMapName }}
+                  key: INFLUXDB_DB
+          command:
+            - sh
+            - -c
+            - |
+              until curl -sf http://influxdb:8086/ping; do
+                echo "[wait] InfluxDB not ready"; sleep 3;
+              done
+              influx -host influxdb -execute "CREATE DATABASE $INFLUXDB_DB"
+              if ! influx -host influxdb -execute "SHOW USERS" | grep -q '^$INFLUXDB_USERNAME'; then
+                influx -host influxdb -execute "CREATE USER $INFLUXDB_USERNAME WITH PASSWORD '$INFLUXDB_PASSWORD'"
+              fi
+              if ! influx -host influxdb -execute "SHOW GRANTS FOR $INFLUXDB_USERNAME" | grep -q '$INFLUXDB_DB'; then
+                influx -host influxdb -execute "GRANT ALL ON $INFLUXDB_DB TO $INFLUXDB_USERNAME"
+              fi
+              influx -host influxdb -execute "SHOW GRANTS FOR $INFLUXDB_USERNAME"
+{{- end }}

@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/zone-grafana
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 3000
+
+containerPort: 3000
+
+rootUrl: "https://grafana.monitory.space/"
+allowEmbedding: "true"
+cookieSecure: "false"
+cookieSameSite: "lax"
+authAnonymousEnabled: "true"
+authAnonymousOrgRole: "Viewer"
+
+configMapName: grafana-config
+secretName: grafana-secret
