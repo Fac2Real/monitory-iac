@@ -19,11 +19,29 @@ spec:
           ports:
             - containerPort: 8081
             - containerPort: 6123
-          envFrom:
-            - configMapRef:
-                name: backend-config
-            - secretRef:
-                name: backend-secret
+          env:
+            # - name: AWS_ACCESS_KEY_ID
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: flink-config
+            #       key: AWS_ACCESS_KEY_ID
+            # - name: AWS_SECRET_ACCESS_KEY
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: flink-config
+            #       key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_REGION
+              value: ap-northeast-2
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: flink-secret
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: flink-secret
+                  key: AWS_SECRET_ACCESS_KEY
 ---
 apiVersion: v1
 kind: Service

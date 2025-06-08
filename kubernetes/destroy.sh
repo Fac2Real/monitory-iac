@@ -43,8 +43,8 @@ echo
 echo "5. InfluxDB, MySQL 삭제"
 kubectl delete -f influxdb.yaml --ignore-not-found
 echo "   ✅ influxdb.yaml 삭제 완료"
-kubectl delete -f mysql.yaml --ignore-not-found
-echo "   ✅ mysql.yaml 삭제 완료"
+# kubectl delete -f mysql.yaml --ignore-not-found
+# echo "   ✅ mysql.yaml 삭제 완료"
 echo
 
 # 6) Secret / ConfigMap 삭제 (마지막)

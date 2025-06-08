@@ -22,7 +22,7 @@ echo
 # 3) 데이터베이스 컴포넌트 배포
 # echo "3. MySQL, InfluxDB 배포"
 # kubectl apply -f mysql.yaml
-echo "   ✅ mysql.yaml 적용 완료"
+# echo "   ✅ mysql.yaml 적용 완료"
 kubectl apply -f influxdb.yaml
 echo "   ✅ influxdb.yaml 적용 완료"
 echo
@@ -46,6 +46,8 @@ echo "   ✅ grafana.yaml 적용 완료"
 kubectl apply -f flink.yaml
 echo "   ✅ flink.yaml 적용 완료"
 echo
+
+sleep 5  # 잠시 대기 (리소스 생성 안정성 확보를 위해)
 
 # 6) 백엔드(Backend) + Ingress 배포
 echo "6. Backend(Spring Boot) 및 Ingress 배포"
