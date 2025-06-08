@@ -55,4 +55,7 @@ kubectl delete -f configmap.yaml --ignore-not-found
 echo "   ✅ configmap.yaml 삭제 완료"
 echo
 
+kubectl delete pvc data-kafka-0 --ignore-not-found
+echo "   ✅ PVC data-kafka-0 삭제 완료"
+
 echo "🔴 모든 리소스가 정상적으로 삭제되었습니다."

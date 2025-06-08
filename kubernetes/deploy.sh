@@ -39,8 +39,8 @@ echo
 
 # 5) 모니터링/시각화 툴 배포 (Chronograf, Grafana, Flink)
 echo "5. Chronograf, Grafana, Flink 배포"
-kubectl apply -f chronograf.yaml
-echo "   ✅ chronograf.yaml 적용 완료"
+# kubectl apply -f chronograf.yaml
+# echo "   ✅ chronograf.yaml 적용 완료"
 kubectl apply -f grafana.yaml
 echo "   ✅ grafana.yaml 적용 완료"
 kubectl apply -f flink.yaml
