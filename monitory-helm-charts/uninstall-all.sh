@@ -13,13 +13,13 @@ for chart in */; do
   fi
 done
 
-# 2. ConfigMap, Secret 삭제
-echo "=== ConfigMap, Secret 삭제 ==="
-if [ -f configmap.yaml ]; then
-  kubectl delete -f configmap.yaml --ignore-not-found
-fi
-if [ -f secret.yaml ]; then
-  kubectl delete -f secret.yaml --ignore-not-found
-fi
+# # 2. ConfigMap, Secret 삭제
+# echo "=== ConfigMap, Secret 삭제 ==="
+# if [ -f configmap.yaml ]; then
+#   kubectl delete -f configmap.yaml --ignore-not-found
+# fi
+# if [ -f secret.yaml ]; then
+#   kubectl delete -f secret.yaml --ignore-not-found
+# fi
 
 echo "=== 전체 삭제 완료 ==="

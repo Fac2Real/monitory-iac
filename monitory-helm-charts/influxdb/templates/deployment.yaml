@@ -1,18 +1,19 @@
+{{- $pvcName := .Values.pvc.name -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: influxdb
+  name: {{ include "influxdb.fullname" . }}
   labels:
     app: influxdb
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: influxdb
+      app: {{ include "influxdb.name" . }}
   template:
     metadata:
       labels:
-        app: influxdb
+        app: {{ include "influxdb.name" . }}
     spec:
       securityContext:
         fsGroup: 1000
@@ -35,4 +36,4 @@ spec:
       volumes:
         - name: influxdb-data
           persistentVolumeClaim:
-            claimName: {{ .Values.pvc.name }}
+            claimName: {{ $pvcName }}

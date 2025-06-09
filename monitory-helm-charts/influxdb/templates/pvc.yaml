@@ -1,13 +1,16 @@
+{{- $pvcName := .Values.pvc.name -}}
+{{- $exists := lookup "v1" "PersistentVolumeClaim" .Release.Namespace $pvcName -}}
+{{- if not $exists }}
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.pvc.name }}
+  name: {{ $pvcName }}
 spec:
   accessModes:
-    {{- range .Values.pvc.accessModes }}
-    - {{ . }}
-    {{- end }}
+    {{ toYaml .Values.pvc.accessModes | indent 4 }}
   resources:
     requests:
-      storage: {{ .Values.pvc.storage }}
+      storage: {{ .Values.pvc.size }}
   storageClassName: {{ .Values.pvc.storageClassName }}
+{{- end }}

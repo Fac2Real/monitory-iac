@@ -15,12 +15,12 @@ service:
 containerPort: 8086
 
 pvc:
-  create: false
-  name: influxdb-pvc
+  create: true
+  name: influxdb-data
   storageClassName: gp3
   accessModes:
     - ReadWriteOnce
-  storage: 30Gi
+  size: 30Gi
 
 storageClass:
   create: false
