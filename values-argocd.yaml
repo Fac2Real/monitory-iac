@@ -1,0 +1,32 @@
+configs:
+  secret:
+    argocdServerAdminPassword: "$2a$12$I3lPZueBlNdQOk4/yWmuvO8JAY0PTObX5kfRla0up8BkmUmBb7JXi"
+
+  params:
+    server.insecure: true
+
+server:
+  service:
+    type: NodePort
+    annotations:
+      alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    hostname: argocd.monitory.space
+    annotations:
+      alb.ingress.kubernetes.io/group.name: monitory-group
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+      alb.ingress.kubernetes.io/ssl-redirect: '443'
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:853660505909:certificate/c3590fcf-e999-4c89-a24b-60beeddfbabf
+      alb.ingress.kubernetes.io/backend-protocol: HTTP
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/healthcheck-path: /healthz
+      alb.ingress.kubernetes.io/healthcheck-port: "8080"
+      alb.ingress.kubernetes.io/conditions.argogrpc: |
+        [{"field":"http-header","httpHeaderConfig":{"httpHeaderName": "Content-Type", "values":["application/grpc"]}}]
+    paths:
+      - /
+    pathType: Prefix
+    tls: true
