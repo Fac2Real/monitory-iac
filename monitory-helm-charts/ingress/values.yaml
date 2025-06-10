@@ -21,3 +21,9 @@ rules:
         pathType: Prefix
         serviceName: grafana
         servicePort: 3000
+  - host: argocd.monitory.space
+    paths:
+      - path: /
+        pathType: Prefix
+        serviceName: argocd-server
+        servicePort: 443
