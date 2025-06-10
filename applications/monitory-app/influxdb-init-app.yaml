@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kafka-connect-sink-app
+  name: influxdb-init-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
     targetRevision: main
-    path: applications/kafka-connect-app
+    path: applications/monitory-app/influxdb-app
     directory:
       recurse: true
   destination:
