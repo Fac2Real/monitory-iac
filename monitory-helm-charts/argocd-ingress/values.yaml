@@ -1,4 +1,5 @@
-name: monitory-ingress
+name: argocd-ingress
+namespace: argocd
 
 annotations:
   kubernetes.io/ingress.class: alb
@@ -9,15 +10,9 @@ annotations:
 ingressClassName: alb
 
 rules:
-  - host: api.monitory.space
+  - host: argocd.monitory.space
     paths:
       - path: /
         pathType: Prefix
-        serviceName: backend
-        servicePort: 8080
-  - host: grafana.monitory.space
-    paths:
-      - path: /
-        pathType: Prefix
-        serviceName: grafana
-        servicePort: 3000
+        serviceName: argocd-server
+        servicePort: 443
