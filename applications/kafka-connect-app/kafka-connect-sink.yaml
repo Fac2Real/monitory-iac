@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kafka-connect
+  name: kafka-connect-sink
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
     targetRevision: main
-    path: monitory-helm-charts/kafka-connect
+    path: monitory-helm-charts/db-sink
     helm:
       valueFiles:
         - values.yaml

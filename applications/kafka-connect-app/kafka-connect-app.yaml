@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: flink
+  name: kafka-connect
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
     targetRevision: main
-    path: monitory-helm-charts/flink
+    path: monitory-helm-charts/kafka-connect
     helm:
       valueFiles:
         - values.yaml

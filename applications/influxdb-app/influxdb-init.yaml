@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: flink
+  name: influxdb-init
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
     targetRevision: main
-    path: monitory-helm-charts/flink
+    path: monitory-helm-charts/db-init
     helm:
       valueFiles:
         - values.yaml
