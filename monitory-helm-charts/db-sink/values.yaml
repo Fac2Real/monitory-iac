@@ -1,0 +1,5 @@
+influxdbSinkJob:
+  enabled: true
+  image: curlimages/curl:7.85.0
+  name: influxdb-sink
+  configMapName: influxdb-sink-config
