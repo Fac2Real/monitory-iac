@@ -8,30 +8,30 @@ spec:
   selector:
     matchLabels:
       app: kafka
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: {{ .Values.storage.storageClassName }}
-        resources:
-          requests:
-            storage: {{ .Values.storage.size }}
+  # volumeClaimTemplates:
+  #   - metadata:
+  #       name: data
+  #     spec:
+  #       accessModes:
+  #         - ReadWriteOnce
+  #       storageClassName: {{ .Values.storage.storageClassName }}
+  #       resources:
+  #         requests:
+  #           storage: {{ .Values.storage.size }}
   template:
     metadata:
       labels:
         app: kafka
     spec:
-      securityContext:
-        fsGroup: 1000
+      # securityContext:
+      #   fsGroup: 1000
       initContainers:
-        - name: cleanup-lostfound
-          image: busybox:1.35.0
-          command: ["sh", "-c", "rm -rf /var/lib/kafka/data/lost+found"]
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/kafka/data
+        # - name: cleanup-lostfound
+        #   image: busybox:1.35.0
+        #   command: ["sh", "-c", "rm -rf /var/lib/kafka/data/lost+found"]
+        #   volumeMounts:
+        #     - name: data
+        #       mountPath: /var/lib/kafka/data
         - name: wait-for-zookeeper
           image: busybox:1.35.0
           command:
@@ -74,6 +74,6 @@ spec:
               export KAFKA_BROKER_ID=$BROKER_ID
               export KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://${POD_NAME}.{{ .Values.service.name }}.default.svc.cluster.local:{{ .Values.service.port }}"
               exec /etc/confluent/docker/run
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/kafka/data/
+          # volumeMounts:
+          #   - name: data
+          #     mountPath: /var/lib/kafka/data/
