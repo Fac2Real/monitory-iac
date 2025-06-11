@@ -1,0 +1,5 @@
+apiVersion: v2
+name: monitoring-stack
+description: Prometheus + Grafana + AWS CloudWatch Exporter + Kafka Exporter
+version: 0.1.0
+appVersion: "latest"

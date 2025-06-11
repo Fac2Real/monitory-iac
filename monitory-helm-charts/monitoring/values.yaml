@@ -1,0 +1,36 @@
+global:
+  namespace: monitoring
+
+image:
+  prometheus: prom/prometheus:latest
+  grafana: grafana/grafana:latest
+  cloudwatch_exporter: prom/cloudwatch-exporter:latest
+  kafka_exporter: danielqsj/kafka-exporter:latest
+  influxdb_exporter: prom/influxdb-exporter:latest
+
+service:
+  prometheus:
+    type: ClusterIP
+    port: 9090
+  grafana:
+    type: ClusterIP
+    port: 3000
+  cloudwatch_exporter:
+    port: 9106
+  kafka_exporter:
+    port: 9308
+  influxdb_exporter:
+    port: 9122
+
+aws:
+  region: ap-northeast-2
+  # IAM 권한 필요: cloudwatch:GetMetricData
+  # Secret으로 관리 필요 항목
+  accessKey: ""
+  secretKey: ""
+
+kafka:
+  brokers: ""
+
+influxdb:
+  url: ""
