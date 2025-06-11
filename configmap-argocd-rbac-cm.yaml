@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.default: role:readonly
+  policy.csv: |
+    p, role:jenkins, applications, get, *, allow
+    p, role:jenkins, applications, sync, *, allow
+    p, role:jenkins, applications, update, *, allow
+    g, jenkins, role:jenkins
