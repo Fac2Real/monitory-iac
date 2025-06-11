@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/model-server
+  tag: dev-latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8000
+
+configMapName: model-server-config
+secretName: model-server-secret
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

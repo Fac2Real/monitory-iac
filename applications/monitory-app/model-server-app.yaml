@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: influxdb-init-app
+  name: model-server
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
@@ -10,15 +10,14 @@ spec:
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
     targetRevision: main
-    path: applications/monitory-app/influxdb-app
-    directory:
-      recurse: true
+    path: monitory-helm-charts/model-server
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+    namespace: default
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
