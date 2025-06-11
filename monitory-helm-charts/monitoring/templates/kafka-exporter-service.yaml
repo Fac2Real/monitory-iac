@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-kafka-exporter
+  namespace: {{ .Values.namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.kafkaExporter.port }}
+      targetPort: {{ .Values.kafkaExporter.port }}
+      name: metrics
+  selector:
+    app: kafka-exporter

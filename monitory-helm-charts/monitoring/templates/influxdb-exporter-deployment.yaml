@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-influxdb-exporter
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb-exporter
+  template:
+    metadata:
+      labels:
+        app: influxdb-exporter
+    spec:
+      containers:
+        - name: influxdb-exporter
+          image: {{ .Values.influxdbExporter.image }}
+          ports:
+            - containerPort: {{ .Values.influxdbExporter.port }}
+          env:
+            - name: INFLUXDB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: monitoring-config
+                  key: INFLUXDB_URL

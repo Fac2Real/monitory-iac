@@ -11,13 +11,18 @@ spec:
     metadata:
       labels:
         app: model-server
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.service.port }}"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: model-server
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 8000
+            - name: http
+              containerPort: {{ .Values.service.port }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.configMapName }}

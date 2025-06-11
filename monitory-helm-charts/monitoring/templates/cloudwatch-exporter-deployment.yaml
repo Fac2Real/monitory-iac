@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-cloudwatch-exporter
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatch-exporter
+  template:
+    metadata:
+      labels:
+        app: cloudwatch-exporter
+    spec:
+      containers:
+        - name: cloudwatch-exporter
+          image: {{ .Values.cloudwatchExporter.image }}
+          ports:
+            - containerPort: {{ .Values.cloudwatchExporter.port }}
+          envFrom:
+            - secretRef:
+                name: aws-credentials
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: aws-config

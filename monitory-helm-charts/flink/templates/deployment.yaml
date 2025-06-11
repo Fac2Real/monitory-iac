@@ -11,14 +11,22 @@ spec:
     metadata:
       labels:
         app: flink
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.containerPortMetrics }}"
+        prometheus.io/path: "/"
     spec:
       containers:
         - name: flink
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.containerPortUI }}
-            - containerPort: {{ .Values.containerPortRPC }}
+            - name: webui
+              containerPort: {{ .Values.containerPortUI }}
+            - name: rpc
+              containerPort: {{ .Values.containerPortRPC }}
+            - name: metrics
+              containerPort: {{ .Values.containerPortMetrics }}
           env:
             - name: AWS_REGION
               value: {{ .Values.awsRegion | quote }}

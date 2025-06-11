@@ -1,5 +1,6 @@
 apiVersion: v2
-name: monitoring-stack
-description: Prometheus + Grafana + AWS CloudWatch Exporter + Kafka Exporter
+name: monitoring
+description: Unified monitoring stack (Prometheus + CloudWatch/Kafka/InfluxDB Exporter)
+type: application
 version: 0.1.0
-appVersion: "latest"
+appVersion: "1.0"

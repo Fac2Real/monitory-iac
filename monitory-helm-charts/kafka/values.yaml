@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: confluentinc/cp-kafka
-  tag: latest
+  tag: 7.9.1
   pullPolicy: IfNotPresent
 
 service:

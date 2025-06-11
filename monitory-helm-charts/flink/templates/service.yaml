@@ -11,5 +11,8 @@ spec:
     - name: rpc
       port: {{ .Values.containerPortRPC }}
       targetPort: {{ .Values.containerPortRPC }}
+    - name: metrics
+      port: {{ .Values.containerPortMetrics }}
+      targetPort: {{ .Values.containerPortMetrics }}
   selector:
     app: flink

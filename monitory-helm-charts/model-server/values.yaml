@@ -11,11 +11,3 @@ service:
 
 configMapName: model-server-config
 secretName: model-server-secret
-
-resources: {}
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
