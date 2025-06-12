@@ -22,3 +22,9 @@ rules:
         pathType: Prefix
         serviceName: grafana
         servicePort: 3000
+  - host: prometheus.monitory.space
+    paths:
+      - path: /
+        pathType: Prefix
+        serviceName: monitoring-prometheus
+        servicePort: 9090

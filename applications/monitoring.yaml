@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
-    targetRevision: main
+    targetRevision: deploy
     path: monitory-helm-charts/monitoring
     helm:
       valueFiles:

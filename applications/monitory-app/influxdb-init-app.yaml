@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
-    targetRevision: main
+    targetRevision: deploy
     path: applications/monitory-app/influxdb-app
     directory:
       recurse: true
