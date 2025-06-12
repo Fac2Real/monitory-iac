@@ -3,6 +3,11 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-prometheus
   namespace: {{ .Values.namespace }}
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /-/healthy
+    alb.ingress.kubernetes.io/healthcheck-port: "9090"
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+
 spec:
   type: ClusterIP
   ports:
