@@ -109,3 +109,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
                   key: rds_password
+            - name: FASTAPI_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: fastapi_url
