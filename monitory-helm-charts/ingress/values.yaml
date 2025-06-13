@@ -28,3 +28,9 @@ rules:
         pathType: Prefix
         serviceName: monitoring-prometheus
         servicePort: 9090
+  - host: flink.monitory.space
+    paths:
+      - path: /
+        pathType: Prefix
+        serviceName: flink
+        servicePort: 8081

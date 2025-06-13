@@ -24,6 +24,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              subPath: aws-config.yml
       volumes:
         - name: config
           configMap:
