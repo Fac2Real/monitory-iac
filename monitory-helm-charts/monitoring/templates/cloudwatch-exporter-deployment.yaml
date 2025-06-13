@@ -23,7 +23,7 @@ spec:
                 name: aws-credentials
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /config/config.yml
               subPath: aws-config.yml
       volumes:
         - name: config
