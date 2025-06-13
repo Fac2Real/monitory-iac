@@ -46,12 +46,6 @@ spec:
               value: "lax"
             - name: GF_SERVER_ROOT_URL
               value: "https://grafana.monitory.space/"
-          volumeMounts:
-            - name: grafana-data
-              mountPath: /var/lib/grafana
-      volumes:
-        - name: grafana-data
-          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

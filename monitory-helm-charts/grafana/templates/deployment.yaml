@@ -46,9 +46,3 @@ spec:
               value: {{ .Values.cookieSameSite | quote }}
             - name: GF_SERVER_ROOT_URL
               value: {{ .Values.rootUrl | quote }}
-          volumeMounts:
-            - name: grafana-data
-              mountPath: /var/lib/grafana
-      volumes:
-        - name: grafana-data
-          emptyDir: {}
