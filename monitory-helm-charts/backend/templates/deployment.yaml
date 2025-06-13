@@ -114,3 +114,8 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.configMapName }}
                   key: fastapi_url
+            - name: SQS_QUEUE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: sqs_queue_url
