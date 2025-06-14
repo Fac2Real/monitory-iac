@@ -1,15 +1,11 @@
 replicaCount: 1
-
 image:
   repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/springboot
-  tag: backend-latest
+  tag: 139c14ad2f3eed0883cc15f0acd64056b23fea20
   pullPolicy: Always
-
 service:
   type: NodePort
   port: 8080
-
 configMapName: backend-config
 secretName: backend-secret
-
 containerPort: 8080
