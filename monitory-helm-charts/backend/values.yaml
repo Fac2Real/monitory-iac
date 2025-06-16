@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/springboot
-  tag: c80de0d8b634f83c9a36ee24c71a1cb2486ca0a7
+  tag: 37bae3c5b25e93d45cfd692ed76e31db41474c09
   pullPolicy: Always
 service:
   type: NodePort
