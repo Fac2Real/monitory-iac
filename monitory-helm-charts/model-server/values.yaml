@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: 853660505909.dkr.ecr.ap-northeast-2.amazonaws.com/model-server
-  tag: 940fa7026461392ff7a7baf6e87275c9db904aa0
+  tag: f39ad2e34263826a0f061ff4edd45cc14d48dfab
   pullPolicy: Always
 service:
   type: ClusterIP
