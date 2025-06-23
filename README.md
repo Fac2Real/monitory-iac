@@ -1,6 +1,6 @@
 # Monitory IaC (Infrastructure as Code) 레포지토리
 
-이 레포지토리는 **Monitory**의 Kubernetes 인프라 및 Helm 차트 배포를 코드로 관리하는 IaC(Infrastructure as Code) 저장소입니다.  
+이 레포지토리는 **Monitory**의 Kubernetes 인프라 및 Helm 차트 배포를 코드로 관리하는 IaC(Infrastructure as Code) 저장소입니다.
 AWS EKS 환경에서 데이터베이스, 메시징, 모니터링, 백엔드, 네트워크 등 다양한 컴포넌트를 효율적으로 배포/운영/관리할 수 있도록 설계되었습니다.
 
 ---
@@ -23,6 +23,7 @@ AWS EKS 환경에서 데이터베이스, 메시징, 모니터링, 백엔드, 네
 ```
 .
 ├── .gitignore
+├── README.md
 ├── configmap-argocd-rbac-cm.yaml
 ├── values-alb.yaml
 ├── values-argocd.yaml
@@ -31,6 +32,22 @@ AWS EKS 환경에서 데이터베이스, 메시징, 모니터링, 백엔드, 네
 │   ├── monitoring.yaml
 │   ├── monitory.yaml
 │   └── monitory-app/
+│       ├── backend-app.yaml
+│       ├── chronograf-app.yaml
+│       ├── flink-app.yaml
+│       ├── grafana-app.yaml
+│       ├── influxdb-init-app.yaml
+│       ├── ingress-app.yaml
+│       ├── kafka-app.yaml
+│       ├── kafka-connect-sink-app.yaml
+│       ├── model-server-app.yaml
+│       ├── zookeeper-app.yaml
+│       ├── influxdb-app/
+│       │   ├── influxdb-app.yaml
+│       │   └── influxdb-init.yaml
+│       └── kafka-connect-app/
+│           ├── kafka-connect-app.yaml
+│           └── kafka-connect-sink.yaml
 ├── kubernetes/
 │   ├── backend.yaml
 │   ├── chronograf.yaml
@@ -53,9 +70,48 @@ AWS EKS 환경에서 데이터베이스, 메시징, 모니터링, 백엔드, 네
 │   ├── uninstall-all.sh
 │   └── ... (각종 Helm 차트 디렉터리)
 ├── permanent/
-│   └── ... (영구적 리소스)
+│   ├── data.tf
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   └── variables.tf
+│   └── modules/
+│       ├── ecr
+│       ├── endpoint_sg
+│       ├── jenkins
+│       ├── rds
+│       ├── s3
+│       └── vpc
 ├── temporary/
-│   └── ... (임시 리소스)
+│   ├── data.tf
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   └── variables.tf
+│   └── modules/
+│       └── private_link
+└── terraform/
+    ├── data.tf
+    ├── main.tf
+    ├── outputs.tf
+    ├── providers.tf
+    ├── values.tfvars
+    ├── variables.tf
+    └── modules/
+        ├── db_subnet_group
+        ├── ec2
+        ├── ecr
+        ├── eks
+        ├── iam
+        ├── iot
+        ├── kinesis
+        ├── lambda
+        ├── lightsail
+        ├── rds
+        ├── s3
+        ├── sg
+        ├── sqs
+        └── vpc
 ```
 
 ---
@@ -64,33 +120,37 @@ AWS EKS 환경에서 데이터베이스, 메시징, 모니터링, 백엔드, 네
 
 ### 1. 루트 파일
 
-- **configmap-argocd-rbac-cm.yaml**: ArgoCD RBAC 설정용 ConfigMap
-- **values-alb.yaml**: AWS ALB Ingress Controller Helm 차트 values 예시
-- **values-argocd.yaml**: ArgoCD Helm 차트 values 예시
-- **values-ebs-csi-driver.yaml**: AWS EBS CSI Driver Helm 차트 values 예시
+* **configmap-argocd-rbac-cm.yaml**: ArgoCD RBAC 설정용 ConfigMap
+* **values-alb.yaml**: AWS ALB Ingress Controller Helm 차트 values 예시
+* **values-argocd.yaml**: ArgoCD Helm 차트 values 예시
+* **values-ebs-csi-driver.yaml**: AWS EBS CSI Driver Helm 차트 values 예시
 
 ### 2. `applications/`
 
-- ArgoCD 등 GitOps 도구에서 사용하는 Application 선언 및 관련 리소스
+* ArgoCD 등 GitOps 도구에서 사용하는 Application 선언 및 관련 리소스
 
 ### 3. `kubernetes/`
 
-- **각종 서비스별 YAML**: DB, 메시징, 모니터링, 백엔드, 네트워크 등 모든 주요 리소스 선언
-- **deploy.sh**: 전체 리소스 일괄 배포 스크립트
-- **destroy.sh**: 전체 리소스 일괄 삭제(정리) 스크립트
-- **readme.md**: 구성요소별 상세 설명 및 운영 가이드
+* **각종 서비스별 YAML**: DB, 메시징, 모니터링, 백엔드, 네트워크 등 모든 주요 리소스 선언
+* **deploy.sh**: 전체 리소스 일괄 배포 스크립트
+* **destroy.sh**: 전체 리소스 일괄 삭제(정리) 스크립트
+* **readme.md**: 구성요소별 상세 설명 및 운영 가이드
 
 ### 4. `monitory-helm-charts/`
 
-- **install-all.sh**: 모든 Helm 차트 일괄 설치
-- **uninstall-all.sh**: 모든 Helm 차트 일괄 삭제
-- **check-all-charts.sh**: 모든 Helm 차트 유효성 검사
-- **각종 차트 디렉터리**: 서비스별 Helm 차트 소스
+* **install-all.sh**: 모든 Helm 차트 일괄 설치
+* **uninstall-all.sh**: 모든 Helm 차트 일괄 삭제
+* **check-all-charts.sh**: 모든 Helm 차트 유효성 검사
+* **각종 차트 디렉터리**: 서비스별 Helm 차트 소스
 
 ### 5. `permanent/`, `temporary/`
 
-- **permanent/**: 장기적으로 유지되는 리소스
-- **temporary/**: 임시로 사용하는 리소스
+* **permanent/**: 장기적으로 유지되는 리소스
+* **temporary/**: 임시로 사용하는 리소스
+
+### 6. `terraform/`
+
+* Terraform 모듈 및 설정 파일을 모아둔 디렉터리로, 인프라 전반을 코드화하여 관리합니다.
 
 ---
 
