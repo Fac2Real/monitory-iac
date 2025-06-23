@@ -13,7 +13,7 @@ cloudwatchExporter:
 kafkaExporter:
   image: danielqsj/kafka-exporter:latest
   port: 9308
-  brokers: kafka-headless.default.svc.cluster.local:9092
+  brokers: kafka-headless.data.svc.cluster.local:9092
 
 
 influxdbExporter:

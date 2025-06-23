@@ -40,7 +40,7 @@ spec:
             - sh
             - -c
             - |
-              until nc -z {{ .Values.zookeeper.host }}.default.svc.cluster.local {{ .Values.zookeeper.port }}; do
+              until nc -z {{ .Values.zookeeper.host }}.data.svc.cluster.local {{ .Values.zookeeper.port }}; do
                 echo "[init] waiting for zookeeper"; sleep 2;
               done
       containers:
@@ -74,7 +74,7 @@ spec:
             - |
               BROKER_ID=${POD_NAME##*-}
               export KAFKA_BROKER_ID=$BROKER_ID
-              export KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://${POD_NAME}.{{ .Values.service.name }}.default.svc.cluster.local:{{ .Values.service.port }}"
+              export KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://${POD_NAME}.{{ .Values.service.name }}.data.svc.cluster.local:{{ .Values.service.port }}"
               exec /etc/confluent/docker/run
           # volumeMounts:
           #   - name: data

@@ -30,7 +30,7 @@ spec:
             - sh
             - -c
             - |
-              until curl -sf http://influxdb:8086/ping; do
+              until curl -sf http://influxdb.data.svc.cluster:8086/ping; do
                 echo "[wait] InfluxDB not ready"; sleep 3;
               done
               influx -host influxdb -execute "CREATE DATABASE $INFLUXDB_DB"

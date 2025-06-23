@@ -11,4 +11,4 @@ service:
 
 containerPort: 8888
 
-influxdbUrl: "http://influxdb:8086"
+influxdbUrl: "http://influxdb.data.svc.local:8086"

@@ -13,4 +13,4 @@ service:
 
 containerPort: 8083
 
-kafkaBootstrapServers: "kafka-headless.default.svc.cluster.local:9092"
+kafkaBootstrapServers: "kafka-headless.data.svc.cluster.local:9092"

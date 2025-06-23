@@ -1,22 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: chronograf
+  name: flink
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Fac2Real/monitory-iac.git'
     targetRevision: deploy
-    path: monitory-helm-charts/chronograf
+    path: monitory-helm-charts/flink
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: default
+    namespace: data
   syncPolicy:
     automated:
       prune: true
